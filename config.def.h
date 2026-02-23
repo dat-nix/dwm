@@ -49,6 +49,7 @@ static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "[M]",      monocle },
+  { "><>", NULL },   /* floating */
 };
 
 /* key definitions */
