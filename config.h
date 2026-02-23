@@ -73,7 +73,6 @@ static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 
-#include "movestack.c"
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -103,9 +102,7 @@ static const Key keys[] = {
 	// { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } },
 	// { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
 
-	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
-  { MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
-	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
+  { MODKEY|ShiftMask,             XK_Return,  togglescratch,  {.v = scratchpadcmd } },
   { MODKEY|ShiftMask,             XK_x,      spawn,          SHCMD("slock") },
 	{ MODKEY,                       XK_z,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -117,6 +114,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
