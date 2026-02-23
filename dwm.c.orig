@@ -225,12 +225,14 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void spawn(const Arg *arg);
+static void shiftview(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglesticky(const Arg *arg);
+static void togglefullscr(const Arg *arg);
 static void togglescratch(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -1991,6 +1993,13 @@ togglesticky(const Arg *arg)
 }
 
 void
+togglefullscr(const Arg *arg)
+{
+  if(selmon->sel)
+    setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
+}
+
+void
 toggletag(const Arg *arg)
 {
 	unsigned int newtags;
@@ -2534,3 +2543,16 @@ bstackhoriz(Monitor *m) {
 	}
 }
 
+void
+shiftview(const Arg *arg) {
+        Arg shifted;
+
+        if(arg->i > 0) // left circular shift
+                shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+                   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+        else // right circular shift
+                shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+                   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+
+        view(&shifted);
+}
