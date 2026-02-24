@@ -50,6 +50,7 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const int refreshrate = 120;  /* refresh rate (per second) for client move/resize */
 
 #include "fibonacci.c"
+#include <X11/XF86keysym.h>
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 
 static const Layout layouts[] = {
@@ -161,6 +162,18 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_s,      togglesticky,   {0} },
   { MODKEY,              XK_g,           shiftview,  { .i = +1 } },
 { MODKEY,              XK_semicolon,   shiftview,  { .i = -1 } },
+  /* Volume (PipeWire) */
+{ 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+") },
+{ 0, XF86XK_AudioLowerVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-") },
+{ 0, XF86XK_AudioMute,        spawn, SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle") },
+
+/* Microphone */
+{ 0, XF86XK_AudioMicMute,     spawn, SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle") },
+
+
+/* Brightness (kernel backlight, no X hacks) */
+{ 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
+{ 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
 };
 
 /* button definitions */
