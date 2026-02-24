@@ -107,18 +107,18 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
-	{ MODKEY,                       XK_o,      incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_o,      incnmaster,     {.i = -1 } },
+  { MODKEY,               XK_bracketright, incnmaster,     {.i = +1 } },
+  { MODKEY,               XK_bracketleft,  incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_z,      incrgaps,       {.i = +3 } },
-	{ MODKEY,                       XK_x,      incrgaps,       {.i = -3 } },
+  { MODKEY|Mod1Mask,              XK_z,      incrgaps,       {.i = +3 } },
+  { MODKEY|Mod1Mask,              XK_x,      incrgaps,       {.i = -3 } },
+  { MODKEY|Mod1Mask,              XK_a,      defaultgaps,    {0} }, 
+	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
 	// { MODKEY|Mod1Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
 	// { MODKEY|Mod1Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
 	// { MODKEY|Mod1Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
 	// { MODKEY|Mod1Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
 	// { MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
 	// { MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
 	// { MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
@@ -129,7 +129,7 @@ static const Key keys[] = {
 	// { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
 
   { MODKEY|ShiftMask,             XK_Return,  togglescratch,  {.v = scratchpadcmd } },
-  { MODKEY|ShiftMask,             XK_x,      spawn,          SHCMD("slock") },
+  { MODKEY|ShiftMask,             XK_x, spawn, SHCMD("slock & sleep 0.5; loginctl suspend") },
 	{ MODKEY,                       XK_space,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
@@ -170,11 +170,6 @@ static const Key keys[] = {
 /* Microphone */
 { 0, XF86XK_AudioMicMute,     spawn, SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle") },
 
-/* Media control (works for mpv, Firefox, etc.) */
-{ 0, XF86XK_AudioPlay,  spawn, SHCMD("playerctl play-pause") },
-{ 0, XF86XK_AudioPause, spawn, SHCMD("playerctl play-pause") },
-{ 0, XF86XK_AudioNext,  spawn, SHCMD("playerctl next") },
-{ 0, XF86XK_AudioPrev,  spawn, SHCMD("playerctl previous") },
 
 /* Brightness (kernel backlight, no X hacks) */
 { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
