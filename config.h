@@ -57,8 +57,8 @@ static const Layout layouts[] = {
   { "[@]",      spiral },
   { "[\\]",      dwindle },
 
-	{ "[M]",      monocle },
   { "[D]",      deck },
+	{ "[M]",      monocle },
 
   { "|M|",	centeredmaster },               /* Master in middle, slaves on sides */
 	{ ">M>",	centeredfloatingmaster },       /* Same but master floats */
