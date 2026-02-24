@@ -1,31 +1,11 @@
 --- dwm.c
 +++ dwm.c
-@@ -47,14 +47,20 @@
- /* macros */
- #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
- #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
-+#define GETINC(X)               ((X) - 2000)
-+#define INC(X)                  ((X) + 2000)
- #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
-                                * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
-+#define ISINC(X)                ((X) > 1000 && (X) < 3000)
- #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
-+#define MOD(N,M)                ((N)%(M) < 0 ? (N)%(M) + (M) : (N)%(M))
- #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
- #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
- #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
-+#define PREVSEL                 3000
- #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
- #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
-+#define TRUNC(X,A,B)            (MAX((A), MIN((X), (B))))
+@@ -233,6 +233,8 @@ static int xerror(Display *dpy, XErrorEvent *ee);
+ static int xerrordummy(Display *dpy, XErrorEvent *ee);
+ static int xerrorstart(Display *dpy, XErrorEvent *ee);
+ static void zoom(const Arg *arg);
++static void centeredmaster(Monitor *m);
++static void centeredfloatingmaster(Monitor *m);
  
- /* enums */
- enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-@@ -206,6 +213,7 @@ static void setup(void);
- static void seturgent(Client *c, int urg);
- static void showhide(Client *c);
- static void spawn(const Arg *arg);
-+static int stackpos(const Arg *arg); /* patch stacker */
- static void tag(const Arg *arg);
- static void tagmon(const Arg *arg);
- static void tile(Monitor *m);
+ /* variables */
+ static const char broken[] = "broken";

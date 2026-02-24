@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -46,15 +46,26 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 120;  /* refresh rate (per second) for client move/resize */
 
+#include "fibonacci.c"
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
-  { "><>", NULL },   /* floating */
-	{ "[M]",      monocle },
 	{ "TTT",      bstack },
-	{ "===",      bstackhoriz },
+// fibonacci layouts
+  { "[@]",      spiral },
+  { "[\\]",      dwindle },
+
+	{ "[M]",      monocle },
+  { "[D]",      deck },
+
+  { "|M|",	centeredmaster },               /* Master in middle, slaves on sides */
+	{ ">M>",	centeredfloatingmaster },       /* Same but master floats */
+
+  { "><>", NULL },   /* floating */
+  { NULL,		NULL },
+
 };
 
 /* key definitions */
@@ -118,11 +129,14 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
+  { MODKEY,			XK_t,          setlayout,              {.v = &layouts[0]} }, /* tile */
+	{ MODKEY|ShiftMask,		XK_t,          setlayout,              {.v = &layouts[1]} }, /* bstack */
+	{ MODKEY,			XK_y,          setlayout,              {.v = &layouts[2]} }, /* spiral */
+	{ MODKEY|ShiftMask,		XK_y,          setlayout,              {.v = &layouts[3]} }, /* dwindle */
+	{ MODKEY,			XK_u,          setlayout,              {.v = &layouts[4]} }, /* deck */
+	{ MODKEY|ShiftMask,		XK_u,          setlayout,              {.v = &layouts[5]} }, /* monocle */
+	{ MODKEY,			XK_i,          setlayout,              {.v = &layouts[6]} }, /* centeredmaster */
+	{ MODKEY|ShiftMask,		XK_i,          setlayout,              {.v = &layouts[7]} }, /* centeredfloatingmaster */
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
