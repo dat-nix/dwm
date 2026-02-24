@@ -129,14 +129,14 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-  { MODKEY,			XK_t,          setlayout,              {.v = &layouts[0]} }, /* tile */
-	{ MODKEY|ShiftMask,		XK_t,          setlayout,              {.v = &layouts[1]} }, /* bstack */
-	{ MODKEY,			XK_y,          setlayout,              {.v = &layouts[2]} }, /* spiral */
-	{ MODKEY|ShiftMask,		XK_y,          setlayout,              {.v = &layouts[3]} }, /* dwindle */
-	{ MODKEY,			XK_u,          setlayout,              {.v = &layouts[4]} }, /* deck */
-	{ MODKEY|ShiftMask,		XK_u,          setlayout,              {.v = &layouts[5]} }, /* monocle */
-	{ MODKEY,			XK_i,          setlayout,              {.v = &layouts[6]} }, /* centeredmaster */
-	{ MODKEY|ShiftMask,		XK_i,          setlayout,              {.v = &layouts[7]} }, /* centeredfloatingmaster */
+  { MODKEY,                       XK_t,          setlayout,              {.v = &layouts[0]} }, /* tile */
+	{ MODKEY|ShiftMask,             XK_t,          setlayout,              {.v = &layouts[1]} }, /* bstack */
+	{ MODKEY,                       XK_y,          setlayout,              {.v = &layouts[2]} }, /* spiral */
+	{ MODKEY|ShiftMask,             XK_y,          setlayout,              {.v = &layouts[3]} }, /* dwindle */
+	{ MODKEY,                       XK_u,          setlayout,              {.v = &layouts[4]} }, /* deck */
+	{ MODKEY|ShiftMask,             XK_u,          setlayout,              {.v = &layouts[5]} }, /* monocle */
+	{ MODKEY,                       XK_i,          setlayout,              {.v = &layouts[6]} }, /* centeredmaster */
+	{ MODKEY|ShiftMask,             XK_i,          setlayout,              {.v = &layouts[7]} }, /* centeredfloatingmaster */
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
