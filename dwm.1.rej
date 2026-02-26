@@ -1,0 +1,12 @@
+--- dwm.1
++++ dwm.1
+@@ -142,6 +142,9 @@ Add/remove all windows with nth tag to/from the view.
+ .TP
+ .B Mod1\-Shift\-q
+ Quit dwm.
++.TP
++.B Mod1\-Control\-Shift\-q
++Restart dwm.
+ .SS Mouse commands
+ .TP
+ .B Mod1\-Button1
