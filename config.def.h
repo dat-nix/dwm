@@ -104,6 +104,7 @@ static const Layout layouts[] = {
   }
 
 /* commands */
+static const char *rebootcmd[] = {"sudo", "shutdown", "-r", "+0", NULL};
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {
@@ -169,6 +170,8 @@ static const Key keys[] = {
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_BackSpace, quit, {0}},
+    {MODKEY | ShiftMask, XK_Delete, spawn, {.v = rebootcmd}},
+
     {MODKEY, XK_s, togglesticky, {0}},
     {MODKEY, XK_g, shiftview, {.i = +1}},
     {MODKEY, XK_semicolon, shiftview, {.i = -1}},
