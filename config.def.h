@@ -3,6 +3,9 @@
 /* appearance */
 static const unsigned int borderpx = 4; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
+static const int scalepreview =
+    4; /* preview scaling (display w and h / scalepreview) */
+static const int previewbar = 1; /* show the bar in the preview window */
 static const int swallowfloating =
     0; /* 1 means swallow floating windows by default */
 static const unsigned int gappih = 20; /* horiz inner gap between windows */
@@ -87,7 +90,8 @@ static const Layout layouts[] = {
   {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
       {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
       {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
-      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+      {MODKEY | ControlMask | ShiftMask, KEY, previewtag, {.ui = TAG}},
+
 #define STACKKEYS(MOD, ACTION)                                                 \
   {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
       {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
