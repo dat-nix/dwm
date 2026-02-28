@@ -428,6 +428,20 @@ void applyrules(Client *c) {
       c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
 }
 
+static int tagisempty(Monitor *m, unsigned int tag) {
+  Client *c;
+  for (c = m->clients; c; c = c->next)
+    if (c->tags & (1 << tag))
+      return 0;
+  return 1;
+}
+
+static void cleartagpreview(Monitor *m, unsigned int tag) {
+  if (m->tagmap[tag]) {
+    XFreePixmap(dpy, m->tagmap[tag]);
+    m->tagmap[tag] = None;
+  }
+}
 int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact) {
   int baseismin;
   Monitor *m = c->mon;
@@ -2322,6 +2336,7 @@ void unfocus(Client *c, int setfocus) {
 void unmanage(Client *c, int destroyed) {
   Monitor *m = c->mon;
   XWindowChanges wc;
+  unsigned int i;
 
   if (c->swallowing) {
     unswallow(c);
@@ -2357,6 +2372,12 @@ void unmanage(Client *c, int destroyed) {
     arrange(m);
     focus(NULL);
     updateclientlist();
+  }
+
+  for (i = 0; i < LENGTH(tags); i++) {
+    if (tagisempty(m, i)) {
+      cleartagpreview(m, i);
+    }
   }
 }
 
