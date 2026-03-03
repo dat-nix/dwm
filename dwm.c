@@ -1331,9 +1331,15 @@ void motionnotify(XEvent *e) {
 
   if (ev->window == selmon->barwin) {
     i = x = 0;
-    do
+    unsigned int occ = 0;
+    for (Client *tc = selmon->clients; tc; tc = tc->next)
+      occ |= tc->tags == TAGMASK ? 0 : tc->tags;
+    do {
+      /* skip vacant tags, matching how drawbar renders them */
+      if (!(occ & 1 << i || selmon->tagset[selmon->seltags] & 1 << i))
+        continue;
       x += TEXTW(tags[i]);
-    while (ev->x >= x && ++i < LENGTH(tags));
+    } while (ev->x >= x && ++i < LENGTH(tags));
     /* FIXME when hovering the mouse over the tags and we view the tag,
      *       the preview window get's in the preview shot */
 
@@ -1938,6 +1944,12 @@ void takepreview(void) {
     occ |= c->tags;
   // occ |= c->tags == 255 ? 0 : c->tags; /* hide vacants */
 
+  /* unmap the preview window once before capturing, so it doesn't appear in
+   * screenshots */
+  selmon->previewshow = 0;
+  XUnmapWindow(dpy, selmon->tagwin);
+  XSync(dpy, False);
+
   for (i = 0; i < LENGTH(tags); i++) {
     /* searching for tags that are occupied && selected */
     if (!(occ & 1 << i) || !(selmon->tagset[selmon->seltags] & 1 << i))
@@ -1947,11 +1959,6 @@ void takepreview(void) {
       XFreePixmap(dpy, selmon->tagmap[i]);
       selmon->tagmap[i] = 0;
     }
-
-    /* try to unmap the window so it doesn't show the preview on the preview */
-    selmon->previewshow = 0;
-    XUnmapWindow(dpy, selmon->tagwin);
-    XSync(dpy, False);
 
     if (!(image = imlib_create_image(sw, sh))) {
       fprintf(stderr, "dwm: imlib: failed to create image, skipping.");
@@ -1975,6 +1982,10 @@ void takepreview(void) {
     selmon->tagmap[i] =
         XCreatePixmap(dpy, selmon->tagwin, selmon->mw / scalepreview,
                       selmon->mh / scalepreview, DefaultDepth(dpy, screen));
+    if (!selmon->tagmap[i]) {
+      imlib_free_image();
+      continue;
+    }
     imlib_context_set_drawable(selmon->tagmap[i]);
     imlib_render_image_part_on_drawable_at_size(0, 0, selmon->mw, selmon->mh, 0,
                                                 0, selmon->mw / scalepreview,
