@@ -146,7 +146,7 @@ static const Key keys[] = {
     // { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
 
     {MODKEY | ShiftMask, XK_Return, togglescratch, {.v = scratchpadcmd}},
-    {MODKEY | ShiftMask, XK_x, spawn, SHCMD("loginctl suspend")},
+    {MODKEY | ShiftMask, XK_l, spawn, SHCMD("loginctl suspend")},
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_c, killclient, {0}},
