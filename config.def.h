@@ -155,7 +155,7 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
     {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
-    {MODKEY, XK_F7, spawn, SHCMD("~/.screenlayout/mirror.sh")},
+    {0, XK_F7, spawn, SHCMD("/home/datnix/.screenlayout/mirror.sh")},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_BackSpace, quit, {0}},
@@ -164,21 +164,34 @@ static const Key keys[] = {
     {MODKEY, XK_s, togglesticky, {0}},
     {MODKEY, XK_g, shiftview, {.i = +1}},
     {MODKEY, XK_semicolon, shiftview, {.i = -1}},
-    /* Volume (PipeWire) */
+    /* Volume (PipeWire + notify) */
     {0, XF86XK_AudioRaiseVolume, spawn,
-     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+")},
+     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && dunstify -r 9992 -t "
+           "1000 '🔊 Volume' \"$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk "
+           "'{print int($2*100)}')%\"")},
+
     {0, XF86XK_AudioLowerVolume, spawn,
-     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")},
+     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && dunstify -r 9992 -t "
+           "1000 '🔉 Volume' \"$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk "
+           "'{print int($2*100)}')%\"")},
+
     {0, XF86XK_AudioMute, spawn,
-     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")},
+     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && dunstify -r 9992 -t "
+           "1000 '🔇 Volume' 'Mute toggled'")},
 
-    /* Microphone */
+    /* Microphone + notify */
     {0, XF86XK_AudioMicMute, spawn,
-     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle")},
+     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && dunstify -r 9993 "
+           "-t 1000 '🎤 Mic' 'Toggle mic'")},
 
-    /* Brightness (kernel backlight, no X hacks) */
-    {0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set +10%")},
-    {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-")},
+    /* Brightness (OSD) */
+    {0, XF86XK_MonBrightnessUp, spawn,
+     SHCMD("brightnessctl set +10% && dunstify -r 9991 -t 1000 '☀️ Brightness' "
+           "\"$(brightnessctl info | grep -oP '\\(\\K[0-9]+(?=%)')%\"")},
+
+    {0, XF86XK_MonBrightnessDown, spawn,
+     SHCMD("brightnessctl set 10%- && dunstify -r 9991 -t 1000 '🌙 Brightness' "
+           "\"$(brightnessctl info | grep -oP '\\(\\K[0-9]+(?=%)')%\"")},
 };
 
 /* button definitions */
