@@ -162,8 +162,8 @@ static const Key keys[] = {
     {MODKEY | ControlMask | ShiftMask, XK_BackSpace, quit, {1}},
 
     {MODKEY, XK_s, togglesticky, {0}},
-    {MODKEY, XK_g, shiftview, {.i = +1}},
-    {MODKEY, XK_semicolon, shiftview, {.i = -1}},
+    {MODKEY, XK_g, shiftview, {.i = -1}},
+    {MODKEY, XK_semicolon, shiftview, {.i = +1}},
     /* Volume (PipeWire + notify) */
     {0, XF86XK_AudioRaiseVolume, spawn,
      SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && dunstify -r 9992 -t "
