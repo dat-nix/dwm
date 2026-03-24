@@ -20,6 +20,7 @@ static const int showbar = 1;     /* 0 means no bar */
 static const int topbar = 1;      /* 0 means bottom bar */
 static const int horizpadbar = 2; /* horizontal padding for statusbar */
 static const int vertpadbar = 0;  /* vertical padding for statusbar */
+
 static const char *fonts[] = {
     "JetBrainsMono Nerd Font:size=11",
     "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"};
