@@ -203,9 +203,7 @@ static const Key keys[] = {
     {MODKEY, XK_v, spawn,
      SHCMD("greenclip print | grep . | dmenu -i -l 10 -p clipboard | xargs -r "
            "-d '\\n' -I '{}' greenclip print '{}'")},
-    {0, XK_Print, spawn, SHCMD("flameshot gui -c")},
-    {ShiftMask, XK_Print, spawn,
-     SHCMD("flameshot gui -p ~/Pictures/Screenshots")},
+    {0, XK_Print, spawn, SHCMD("flameshot gui -p ~/Pictures/Screenshots")},
 };
 
 /* button definitions */
