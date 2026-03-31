@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx = 4; /* border pixel of windows */
+static const unsigned int borderpx = 3; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
 static const int scalepreview =
     4; /* preview scaling (display w and h / scalepreview) */
@@ -25,16 +25,21 @@ static const char *fonts[] = {
     "JetBrainsMono Nerd Font:size=11",
     "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"};
 static const char dmenufont[] = "monospace:size=11";
-static const char col_gray1[] = "#222222";
-static const char col_gray2[] = "#888888";
-static const char col_gray3[] = "#bbbbbb";
-static const char col_gray4[] = "#eeeeee";
-static const char col_cyan[] = "#005577";
-static const char col_red[] = "#ff2222"; /* focused border - đỏ thuần */
+
+/* Oxocarbon */
+static const char col_bg[] = "#161616";
+static const char col_bg_alt[] = "#262626";
+static const char col_border[] = "#393939";
+static const char col_fg[] = "#dde1e6";
+static const char col_fg_dim[] = "#a8b0b8";
+static const char col_blue[] = "#33b1ff";
+static const char col_magenta[] = "#be95ff";
+static const char col_red[] = "#ee5396";
+
 static const char *colors[][3] = {
-    /*               fg         bg         border   */
-    [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
-    [SchemeSel] = {col_gray4, col_cyan, col_red},
+    /*               fg          bg          border      */
+    [SchemeNorm] = {col_fg_dim, col_bg, col_border},
+    [SchemeSel] = {col_fg, col_bg_alt, col_blue},
 };
 
 /* tagging */
@@ -114,8 +119,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {
-    "dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1,
-    "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
+    "dmenu_run", "-m",       dmenumon, "-fn",      dmenufont, "-nb",    col_bg,
+    "-nf",       col_fg_dim, "-sb",    col_bg_alt, "-sf",     col_blue, NULL};
 static const char *termcmd[] = {"st", NULL};
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = {"st", "-t",     scratchpadname,
