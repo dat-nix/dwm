@@ -142,7 +142,7 @@ static const Key keys[] = {
     {MODKEY | Mod1Mask, XK_0, togglegaps, {0}},
 
     {MODKEY | ShiftMask, XK_Return, togglescratch, {.v = scratchpadcmd}},
-    {MODKEY | ShiftMask, XK_l, spawn, SHCMD("loginctl suspend")},
+    {MODKEY | ShiftMask, XK_l, spawn, SHCMD("~/.local/bin/powermenu")},
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_c, killclient, {0}},
@@ -198,6 +198,15 @@ static const Key keys[] = {
     {0, XF86XK_MonBrightnessDown, spawn,
      SHCMD("brightnessctl set 10%- && dunstify -r 9991 -t 1000 '🌙 Brightness' "
            "\"$(brightnessctl info | grep -oP '\\(\\K[0-9]+(?=%)')%\"")},
+    {MODKEY, XK_n, spawn, SHCMD("dunstctl history-pop")},
+    {MODKEY | ShiftMask, XK_n, spawn, SHCMD("dunstctl close-all")},
+    {MODKEY, XK_v, spawn,
+     SHCMD("greenclip print | grep . | dmenu -i -l 10 -p clipboard | xargs -r "
+           "-d '\\n' -I '{}' greenclip print '{}'")},
+    {0, XK_Print, spawn,
+     SHCMD("flameshot gui -p ~/Pictures/Screenshots && dunstify -a "
+           "system-monitor -t 1200 \"Screenshot\" \"Saved to "
+           "~/Pictures/Screenshots\"")},
 };
 
 /* button definitions */
