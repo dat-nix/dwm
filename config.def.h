@@ -3,9 +3,6 @@
 /* appearance */
 static const unsigned int borderpx = 3; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
-static const int scalepreview =
-    4; /* preview scaling (display w and h / scalepreview) */
-static const int previewbar = 1; /* show the bar in the preview window */
 static const int swallowfloating =
     0; /* 1 means swallow floating windows by default */
 static const unsigned int gappih = 20; /* horiz inner gap between windows */
@@ -47,14 +44,21 @@ static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 static const Rule rules[] = {
     /* xprop(1):
-     *	WM_CLASS(STRING) = instance, class
-     *	WM_NAME(STRING) = title
+     *  WM_CLASS(STRING) = instance, class
+     *  WM_NAME(STRING) = title
      */
-    /* class     instance  title           tags mask  isfloating  isterminal
+    /* class         instance  title           tags mask  isfloating  isterminal
        noswallow  monitor */
     {"Gimp", NULL, NULL, 0, 1, 0, 0, -1},
     {"Firefox", NULL, NULL, 1 << 8, 0, 0, -1, -1},
+
+    /* generic st rule first */
     {"st-256color", NULL, NULL, 0, 0, 1, 0, -1},
+
+    /* special floating helper terminals after */
+    {NULL, "spcalc", NULL, 0, 1, 1, 0, -1},
+    {NULL, "spnote", NULL, 0, 1, 1, 0, -1},
+
     {NULL, NULL, "Event Tester", 0, 0, 0, 1, -1}, /* xev */
 };
 
@@ -77,7 +81,7 @@ static const Layout layouts[] = {
     /* symbol     arrange function */
     {"[]=", tile}, /* first entry is default */
     {"TTT", bstack},
-    // fibonacci layouts
+    /* fibonacci layouts */
     {"[@]", spiral},
     {"[\\]", dwindle},
 
@@ -89,7 +93,6 @@ static const Layout layouts[] = {
 
     {"><>", NULL}, /* floating */
     {NULL, NULL},
-
 };
 
 /* key definitions */
@@ -98,7 +101,7 @@ static const Layout layouts[] = {
   {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
       {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
       {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
-      {MODKEY | ControlMask | ShiftMask, KEY, previewtag, {.ui = TAG}},
+      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
 #define STACKKEYS(MOD, ACTION)                                                 \
   {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
@@ -121,10 +124,23 @@ static char dmenumon[2] =
 static const char *dmenucmd[] = {
     "dmenu_run", "-m",       dmenumon, "-fn",      dmenufont, "-nb",    col_bg,
     "-nf",       col_fg_dim, "-sb",    col_bg_alt, "-sf",     col_blue, NULL};
+
 static const char *termcmd[] = {"st", NULL};
+
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = {"st", "-t",     scratchpadname,
                                       "-g", "120x34", NULL};
+
+static const char *calccmd[] = {
+    "st", "-n",    "spcalc", "-f", "JetBrainsMono Nerd Font:size=16",
+    "-g", "50x20", "-e",     "bc", "-lq",
+    NULL};
+
+static const char *notecmd[] = {
+    "st", "-n",     "spnote",
+    "-g", "100x28", "-e",
+    "sh", "-c",     "mkdir -p ~/notes && nvim ~/notes/$(date +%F).md",
+    NULL};
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -143,12 +159,19 @@ static const Key keys[] = {
 
     {MODKEY | ShiftMask, XK_Return, togglescratch, {.v = scratchpadcmd}},
     {MODKEY | ShiftMask, XK_l, spawn, SHCMD("~/.local/bin/powermenu")},
+
+    /* chosen app shortcuts */
+    {MODKEY, XK_w, spawn, SHCMD("firefox")},
+    {MODKEY, XK_e, spawn, SHCMD("thunar")},
+    {MODKEY, XK_c, spawn, SHCMD("code")},
+
     {MODKEY, XK_space, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_c, killclient, {0}},
     {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},             /* tile */
     {MODKEY | ShiftMask, XK_t, setlayout, {.v = &layouts[1]}}, /* bstack */
     {MODKEY, XK_y, setlayout, {.v = &layouts[2]}},             /* spiral */
+    {MODKEY | ShiftMask, XK_f, setlayout, {.v = &layouts[8]}}, /* floating */
     {MODKEY | ShiftMask, XK_y, setlayout, {.v = &layouts[3]}}, /* dwindle */
     {MODKEY, XK_u, setlayout, {.v = &layouts[4]}},             /* deck */
     {MODKEY | ShiftMask, XK_u, setlayout, {.v = &layouts[5]}}, /* monocle */
@@ -158,17 +181,26 @@ static const Key keys[] = {
      setlayout,
      {.v = &layouts[7]}}, /* centeredfloatingmaster */
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
-    {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
+    {MODKEY, XK_f, togglefullscr, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
     {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
+
+    /* thinkpad extras */
+    {0, XK_F4, spawn, {.v = calccmd}},
     {0, XK_F7, spawn, SHCMD("/home/datnix/.screenlayout/mirror.sh")},
+    {0, XK_F8, spawn, SHCMD("~/.local/bin/toggle-airplane")},
+    {0, XK_F9, spawn, {.v = notecmd}},
+    {0, XK_F12, spawn, SHCMD("dmenuunicode")},
+
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
-        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6)
-            TAGKEYS(XK_8, 7){MODKEY | ShiftMask, XK_BackSpace, quit, {1}},
+        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
+
+            {MODKEY | ShiftMask, XK_BackSpace, quit, {1}},
 
     {MODKEY, XK_s, togglesticky, {0}},
     {MODKEY, XK_g, shiftview, {.i = -1}},
     {MODKEY, XK_semicolon, shiftview, {.i = +1}},
+
     /* Volume (PipeWire + notify) */
     {0, XF86XK_AudioRaiseVolume, spawn,
      SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && dunstify -r 9992 -t "
@@ -197,12 +229,17 @@ static const Key keys[] = {
     {0, XF86XK_MonBrightnessDown, spawn,
      SHCMD("brightnessctl set 10%- && dunstify -r 9991 -t 1000 '🌙 Brightness' "
            "\"$(brightnessctl info | grep -oP '\\(\\K[0-9]+(?=%)')%\"")},
+
     {MODKEY, XK_n, spawn, SHCMD("dunstctl history-pop")},
     {MODKEY | ShiftMask, XK_n, spawn, SHCMD("dunstctl close-all")},
+
     {MODKEY, XK_v, spawn,
      SHCMD("greenclip print | grep . | dmenu -i -l 10 -p clipboard | xargs -r "
            "-d '\\n' -I '{}' greenclip print '{}'")},
+
     {0, XK_Print, spawn, SHCMD("flameshot gui -p ~/Pictures/Screenshots")},
+    {ShiftMask, XK_Print, spawn,
+     SHCMD("flameshot full -p ~/Pictures/Screenshots")},
 };
 
 /* button definitions */
