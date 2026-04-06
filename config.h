@@ -139,7 +139,6 @@ static const Layout layouts[] = {
 #define STACKKEYS(MOD, ACTION)                                                 \
   {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
       {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
-      {MOD, XK_grave, ACTION##stack, {.i = PREVSEL}},                          \
       {MOD, XK_q, ACTION##stack, {.i = 0}},                                    \
       {MOD, XK_a, ACTION##stack, {.i = 1}},                                    \
       {MOD, XK_z, ACTION##stack, {.i = 2}},                                    \
@@ -155,9 +154,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 
-static const char *dmenucmd[] = {
-    "dmenu_run", "-m",       dmenumon, "-fn",      dmenufont, "-nb",    col_bg,
-    "-nf",       col_fg_dim, "-sb",    col_bg_alt, "-sf",     col_blue, NULL};
+static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,   "-nb",
+                                 col_bg,      "-nf", col_fg_dim, "-sb",
+                                 col_bg_alt,  "-sf", col_blue,   NULL};
 
 static const char *termcmd[] = {"st", NULL};
 
@@ -179,9 +178,9 @@ static const Key keys[] = {
     {MODKEY | Mod1Mask, XK_0, togglegaps, {0}},
 
     /* scratchpads */
-    {MODKEY | ShiftMask, XK_Return, togglescratch, {.ui = 0}}, /* terminal */
-    {0, XK_F4, togglescratch, {.ui = 1}},                      /* calculator */
-    {0, XK_F9, togglescratch, {.ui = 2}},                      /* notes */
+    {MODKEY, XK_grave, togglescratch, {.ui = 0}}, /* terminal */
+    {0, XK_F4, togglescratch, {.ui = 1}},         /* calculator */
+    {0, XK_F9, togglescratch, {.ui = 2}},         /* notes */
 
     {MODKEY | ShiftMask, XK_l, spawn, SHCMD("~/.local/bin/powermenu")},
 
@@ -210,10 +209,8 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY, XK_f, togglefullscr, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
-    {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
 
     /* thinkpad extras */
-    {0, XK_F7, spawn, SHCMD("/home/datnix/.screenlayout/mirror.sh")},
     {0, XK_F8, spawn, SHCMD("~/.local/bin/toggle-airplane")},
     {0, XK_F12, spawn, SHCMD("~/.local/bin/dmenuunicode")},
 
@@ -258,6 +255,11 @@ static const Key keys[] = {
 
     {MODKEY, XK_n, spawn, SHCMD("dunstctl history-pop")},
     {MODKEY | ShiftMask, XK_n, spawn, SHCMD("dunstctl close-all")},
+    {MODKEY | ShiftMask, XK_r, spawn, SHCMD("~/.local/bin/recordmenu")},
+    {0, XK_F7, spawn, SHCMD("~/.local/bin/monitor-menu")},
+    {MODKEY, XK_o, spawn, SHCMD("~/.local/bin/webmenu")},
+    {MODKEY, XK_m, spawn, SHCMD("~/.local/bin/usbmenu")},
+    {MODKEY, XK_d, spawn, SHCMD("~/.local/bin/toggle-dnd")},
 
     {MODKEY, XK_v, spawn,
      SHCMD("greenclip print | grep . | dmenu -i -l 10 -p clipboard | xargs -r "
