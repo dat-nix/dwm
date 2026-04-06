@@ -215,7 +215,7 @@ static const Key keys[] = {
     /* thinkpad extras */
     {0, XK_F7, spawn, SHCMD("/home/datnix/.screenlayout/mirror.sh")},
     {0, XK_F8, spawn, SHCMD("~/.local/bin/toggle-airplane")},
-    {0, XK_F12, spawn, SHCMD("dmenuunicode")},
+    {0, XK_F12, spawn, SHCMD("~/.local/bin/dmenuunicode")},
 
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
