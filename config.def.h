@@ -52,9 +52,16 @@ static const char *spcmd2[] = {
     NULL};
 
 static const char *spcmd3[] = {
-    "st", "-n",     "spnote",
-    "-g", "100x28", "-e",
-    "sh", "-c",     "mkdir -p ~/notes && nvim ~/notes/$(date +%F).md",
+    "st",
+    "-n",
+    "spnote",
+    "-g",
+    "100x28",
+    "-e",
+    "sh",
+    "-c",
+    "mkdir -p ~/notes && cd ~/notes && printf 'Note name: ' && read name && [ "
+    "-n \"$name\" ] && nvim \"$name.md\"",
     NULL};
 
 static Sp scratchpads[] = {
