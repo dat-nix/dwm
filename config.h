@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx = 3; /* border pixel of windows */
+static const unsigned int borderpx = 4; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
 static const int swallowfloating =
     0; /* 1 means swallow floating windows by default */
@@ -21,17 +21,30 @@ static const int vertpadbar = 0;  /* vertical padding for statusbar */
 static const char *fonts[] = {
     "JetBrainsMono Nerd Font:size=11",
     "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"};
-static const char dmenufont[] = "monospace:size=11";
+static const char dmenufont[] = "JetBrainsMono Nerd Font:size=11";
 
 /* Oxocarbon */
-static const char col_bg[] = "#161616";
-static const char col_bg_alt[] = "#262626";
-static const char col_border[] = "#393939";
-static const char col_fg[] = "#dde1e6";
-static const char col_fg_dim[] = "#a8b0b8";
-static const char col_blue[] = "#33b1ff";
-static const char col_magenta[] = "#be95ff";
-static const char col_red[] = "#ee5396";
+// static const char col_bg[] = "#161616";
+// static const char col_bg_alt[] = "#262626";
+// static const char col_border[] = "#393939";
+// static const char col_fg[] = "#dde1e6";
+// static const char col_fg_dim[] = "#a8b0b8";
+// static const char col_blue[] = "#33b1ff";
+// static const char col_magenta[] = "#be95ff";
+// static const char col_red[] = "#ee5396";
+
+/* Solarized Dark */
+/* Solarized-compatible dark theme */
+static const char col_bg[] = "#101414"; /* deep neutral, not Solarized blue */
+static const char col_bg_alt[] = "#181f1f"; /* selected bar bg */
+static const char col_border[] = "#2f3b3b"; /* unfocused border */
+
+static const char col_fg[] = "#eee8d5";     /* Solarized warm foreground */
+static const char col_fg_dim[] = "#93a1a1"; /* Solarized muted text */
+
+static const char col_blue[] = "#dc322f"; /* Solarized red focused border */
+static const char col_magenta[] = "#d33682";
+static const char col_red[] = "#dc322f";
 
 static const char *colors[][3] = {
     /*               fg          bg          border      */
@@ -154,9 +167,16 @@ static const Layout layouts[] = {
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
 
-static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,   "-nb",
-                                 col_bg,      "-nf", col_fg_dim, "-sb",
-                                 col_bg_alt,  "-sf", col_blue,   NULL};
+// static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,   "-nb",
+//                                  col_bg,      "-nf", col_fg_dim, "-sb",
+//                                  col_bg_alt,  "-sf", col_blue,   NULL};
+
+static const char *dmenucmd[] = {
+    "dmenu_run", "-m",       dmenumon, "-nb", col_bg, /* normal bg */
+    "-nf",       col_fg_dim,                          /* normal text */
+    "-sb",       col_bg_alt,                          /* selected bg */
+    "-sf",       col_red, /* selected text = bright red */
+    NULL};
 
 static const char *termcmd[] = {"st", NULL};
 
@@ -219,10 +239,13 @@ static const Key keys[] = {
             TAGKEYS(XK_9, 8)
 
                 {MODKEY | ShiftMask, XK_BackSpace, quit, {1}},
+    {MODKEY, XK_BackSpace, quit, {0}},
 
     {MODKEY, XK_s, togglesticky, {0}},
     {MODKEY, XK_g, shiftview, {.i = -1}},
     {MODKEY, XK_semicolon, shiftview, {.i = +1}},
+    {MODKEY | ShiftMask, XK_w, spawn,
+     SHCMD("/home/datnix/.local/bin/wallmenu")},
 
     /* Volume (PipeWire + notify) */
     {0, XF86XK_AudioRaiseVolume, spawn,
@@ -261,13 +284,10 @@ static const Key keys[] = {
     {MODKEY, XK_m, spawn, SHCMD("~/.local/bin/usbmenu")},
     {MODKEY, XK_d, spawn, SHCMD("~/.local/bin/toggle-dnd")},
 
-    {MODKEY, XK_v, spawn,
-     SHCMD("greenclip print | grep . | dmenu -i -l 10 -p clipboard | xargs -r "
-           "-d '\\n' -I '{}' greenclip print '{}'")},
+    {MODKEY, XK_v, spawn, SHCMD("~/.local/bin/clipmenu-all")},
 
-    {0, XK_Print, spawn, SHCMD("flameshot gui -p ~/Pictures/Screenshots")},
-    {ShiftMask, XK_Print, spawn,
-     SHCMD("flameshot full -p ~/Pictures/Screenshots")},
+    {0, XK_Print, spawn, SHCMD("~/.local/bin/shotarea")},
+    {ShiftMask, XK_Print, spawn, SHCMD("~/.local/bin/shotfull")},
 };
 
 /* button definitions */
