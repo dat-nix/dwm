@@ -19,9 +19,9 @@ static const int horizpadbar = 2; /* horizontal padding for statusbar */
 static const int vertpadbar = 0;  /* vertical padding for statusbar */
 
 static const char *fonts[] = {
-    "JetBrainsMono Nerd Font:size=11",
-    "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"};
-static const char dmenufont[] = "JetBrainsMono Nerd Font:size=11";
+    "JetBrainsMono Nerd Font:size=10",
+    "NotoColorEmoji:pixelsize=11:antialias=true:autohint=true"};
+static const char dmenufont[] = "JetBrainsMono Nerd Font:size=10";
 
 /* Oxocarbon */
 // static const char col_bg[] = "#161616";
