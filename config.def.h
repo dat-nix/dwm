@@ -96,6 +96,7 @@ static const Rule rules[] = {
        isterminal  noswallow  monitor */
     {"Gimp", NULL, NULL, 0, 1, 0, 0, -1},
     {"Firefox", NULL, NULL, 1 << 8, 0, 0, 0, -1},
+    {"ghidra-Ghidra", NULL, NULL, 0, 0, 0, 1, -1},
 
     /* generic st rule first */
     {"st-256color", NULL, NULL, 0, 0, 1, 0, -1},
