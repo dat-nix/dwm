@@ -1046,11 +1046,31 @@ void drawbar(Monitor *m) {
 
   if ((w = m->ww - tw - x) > bh) {
     if (m->sel) {
+      /* 1. Trả lại nguyên bản của dwm: Vẽ text và nền y hệt như gốc,
+            giúp hiển thị đầy đủ tên cửa sổ/program không bị lỗi */
       drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-      drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+      drw_text(drw, x, text_ypos, w, bh, lrpad / 2, m->sel->name, 0);
+
+      /* 2. Vẽ đè đường line màu đỏ lên trên cùng bằng X11 */
+      if (m == selmon) {
+        // Chỉ khi monitor được chọn mới vẽ line màu đỏ (col_blue)
+        XSetForeground(drw->dpy, drw->gc, scheme[SchemeSel][ColBorder].pixel);
+        XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, brdsh_ypos, w,
+                       brdsh_w);
+      }
+
       if (m->sel->isfloating)
         drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
     } else {
+      // if (m->sel) {
+      //   drw_setscheme(drw, scheme[SchemeNorm]);
+      //   drw_text(drw, x, text_ypos, w, bh, lrpad / 2, m->sel->name, 0);
+      //   drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+      //   drw_rect(drw, x, bh - brdsh_ypos, w, brdsh_w, 1, 1);
+      //
+      //   if (m->sel->isfloating)
+      //     drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+      // } else {
       drw_setscheme(drw, scheme[SchemeNorm]);
       drw_rect(drw, x, 0, w, bh, 1, 1);
     }

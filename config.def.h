@@ -3,8 +3,12 @@
 #define SESSION_FILE "/tmp/dwm-session"
 
 /* appearance */
-static const unsigned int borderpx = 4; /* border pixel of windows */
-static const unsigned int snap = 32;    /* snap pixel */
+static const unsigned int borderpx = 4;   /* border pixel of windows */
+static const unsigned int brdsh_w = 2;    /* width of the app bar dash */
+static const unsigned int brdsh_ypos = 0; /* y-position of the dash */
+static const unsigned int text_ypos = 1;  /* y-position of text */
+
+static const unsigned int snap = 32; /* snap pixel */
 static const int swallowfloating =
     0; /* 1 means swallow floating windows by default */
 static const unsigned int gappih = 20; /* horiz inner gap between windows */
